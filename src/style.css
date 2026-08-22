@@ -1,0 +1,80 @@
+body {
+  margin: 0;
+  background: #000000;
+}
+
+#tank {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#tank::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.fish {
+  position: absolute;
+  white-space: nowrap;
+  display: inline-block;
+  filter: drop-shadow(2px 4px 3px rgba(0,0,0,0.3));
+  font-size: 2vmin;
+  text-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
+}
+
+.fish-inner {
+  display: inline-block;
+  animation: wiggle .8s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: skewX(0deg); }
+  50% { transform: skewX(8deg); }
+}
+
+.blue {
+  color: #0079FF;
+}
+
+.green {
+  color: #00DFA2;
+}
+
+.yellow {
+  color: #F6FA70;
+}
+
+.red {
+  color: #FF0060;
+}
+
+.purple {
+  color: #9929EA;
+}
+
+.seaweed {
+  position: absolute;
+  bottom: 0;
+  color: #00DFA2;
+  writing-mode: vertical-rl;
+  transform-origin: bottom center;
+  animation: sway var(--sway-duration) ease-in-out infinite alternate;
+  text-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
+  font-size: 2vmin;
+}
+
+@keyframes sway {
+  from { transform: rotate(-6deg); }
+  to   { transform: rotate(6deg); }
+}
