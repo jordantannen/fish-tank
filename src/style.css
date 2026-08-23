@@ -6,7 +6,8 @@ body {
 #tank {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 80vh;
+  margin-top: 20vh;
   overflow: hidden;
 }
 
@@ -61,6 +62,35 @@ body {
 
 .purple {
   color: #9929EA;
+}
+
+.ripple {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  animation: ripple-bob 3s ease-in-out infinite;
+}
+
+.ripple-inner {
+  white-space: pre;
+  font-family: monospace;
+  line-height: 1;
+  color: #cccccc;
+  font-size: 2vmin;
+  text-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
+  animation: ripple-scroll 20s linear infinite;
+}
+
+@keyframes ripple-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes ripple-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
 }
 
 .seaweed {
