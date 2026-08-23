@@ -1,36 +1,28 @@
 import './style.css'
-import { Fish, type Color } from './fish';
-import { createSeaweed } from './seaweed';
+import { createSchool } from './fish';
+import { createSeaweedBed } from './seaweed';
 import { createRipple } from './ripple';
+
+const FISH_COUNT = 15;
+
+// A backgrounded tab pauses rAF, so the first frame back can carry a huge delta.
+// Cap it or every fish teleports across the tank on return.
+const MAX_FRAME_SECONDS = 0.1;
 
 const tank = document.getElementById("tank") as HTMLElement;
 
 createRipple(tank);
+createSeaweedBed(tank);
+const school = createSchool(tank, FISH_COUNT);
 
-const seaweedCount = 60;
-const seaweedSpacing = tank.clientWidth / seaweedCount;
-for (let i = 0; i < seaweedCount; i++) {
-  const x = i * seaweedSpacing + (Math.random() * seaweedSpacing - seaweedSpacing / 2);
-  createSeaweed(tank, x, 4 + Math.floor(Math.random() * 30));
-}
+let last = performance.now();
 
-type FishTemplate = { body: string; color: Color; speed: number };
+function loop(now: number) {
+  const dt = Math.min((now - last) / 1000, MAX_FRAME_SECONDS);
+  last = now;
 
-const FISH_TYPES: FishTemplate[] = [
-  { body: "><(((('>", color: "green", speed: .7 },
-  { body: "><>", color: "yellow", speed: 1.2 },
-  { body: "><(((o>", color: "blue", speed: .5 },
-  { body: "><[[[[(º>", color: "purple", speed: .3 },
-  { body: "><((*>", color: "red", speed: 1 },
-];
-
-const fishList: Fish[] = Array.from({ length: 15 }, () => {
-  const template = FISH_TYPES[Math.floor(Math.random() * FISH_TYPES.length)];
-  return new Fish(tank, template.body, template.speed, template.color);
-});
-
-function loop() {
-  fishList.forEach(fish => fish.swim());
+  school.forEach(fish => fish.swim(dt));
   requestAnimationFrame(loop);
 }
+
 requestAnimationFrame(loop);
