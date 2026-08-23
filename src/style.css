@@ -69,28 +69,37 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  overflow: hidden;
-  animation: ripple-bob 3s ease-in-out infinite;
 }
 
-.ripple-inner {
+.ripple-row {
+  width: max-content;
   white-space: pre;
   font-family: monospace;
   line-height: 1;
   color: #cccccc;
   font-size: 2vmin;
   text-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
-  animation: ripple-scroll 20s linear infinite;
+  /* scroll uses `translate`, bob uses `transform` so the two don't clobber each other */
+  animation:
+    ripple-scroll 45s linear infinite,
+    ripple-bob 2s ease-in-out infinite alternate;
+}
+
+/* second row shares the first row's baseline and mirrors its bob, so the two are always
+   on opposite sides: every 2s the crest and trough trade places */
+.ripple-row + .ripple-row {
+  margin-top: -1em;
+  animation-direction: normal, alternate-reverse;
 }
 
 @keyframes ripple-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from { translate: 0; }
+  to   { translate: -50%; }
 }
 
 @keyframes ripple-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(4px); }
+  from { transform: translateY(-0.25em); }
+  to   { transform: translateY(0.25em); }
 }
 
 .seaweed {

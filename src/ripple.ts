@@ -5,15 +5,18 @@ export function createRipple(tank: HTMLElement) {
   const outer = document.createElement("div");
   outer.classList.add("ripple");
 
-  const inner = document.createElement("div");
-  inner.classList.add("ripple-inner");
+  // Two rows of tildes, offset so they interleave into a zigzag. CSS stacks them on
+  // one baseline and bobs them in opposite phase, so the crest and trough trade places.
+  for (const offset of [0, GROUP_SIZE]) {
+    const row = document.createElement("div");
+    row.classList.add("ripple-row");
 
-  const wave = "~".repeat(GROUP_SIZE) + " ".repeat(GROUP_SIZE);
-  const gap = " ".repeat(GROUP_SIZE) + "~".repeat(GROUP_SIZE);
-  const topRow = wave.repeat(REPEATS);
-  const bottomRow = gap.repeat(REPEATS);
-  inner.textContent = [topRow, bottomRow].map(line => line + line).join("\n");
+    const pattern = " ".repeat(offset) + "~".repeat(GROUP_SIZE) + " ".repeat(GROUP_SIZE - offset);
+    const line = pattern.repeat(REPEATS);
+    row.textContent = line + line;
 
-  outer.appendChild(inner);
+    outer.appendChild(row);
+  }
+
   tank.appendChild(outer);
 }
