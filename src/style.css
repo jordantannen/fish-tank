@@ -1,5 +1,5 @@
 :root {
-  /* bubbles are meant to match the ripple */
+  /* bubbles are meant to match the surface */
   --water-grey: #cccccc;
 }
 
@@ -69,14 +69,14 @@ body {
   color: #9929EA;
 }
 
-.ripple {
+.surface {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
 }
 
-.ripple-row {
+.surface-row {
   width: max-content;
   white-space: pre;
   font-family: monospace;
@@ -86,23 +86,23 @@ body {
   text-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
   /* scroll uses `translate`, bob uses `transform` so the two don't clobber each other */
   animation:
-    ripple-scroll 60s linear infinite,
-    ripple-bob 4s ease-in-out infinite alternate;
+    surface-scroll 60s linear infinite,
+    surface-bob 4s ease-in-out infinite alternate;
 }
 
 /* second row shares the first row's baseline and mirrors its bob, so the two are always
    on opposite sides: every bob duration the crest and trough trade places */
-.ripple-row + .ripple-row {
+.surface-row + .surface-row {
   margin-top: -1em;
   animation-direction: normal, alternate-reverse;
 }
 
-@keyframes ripple-scroll {
+@keyframes surface-scroll {
   from { translate: 0; }
   to   { translate: -50%; }
 }
 
-@keyframes ripple-bob {
+@keyframes surface-bob {
   from { transform: translateY(-0.125em); }
   to   { transform: translateY(0.125em); }
 }

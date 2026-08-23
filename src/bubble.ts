@@ -1,3 +1,5 @@
+import type { Tank } from './tank';
+
 const GLYPHS = ["O", "o", "0"];
 
 const RISE_MIN = 20; // px per second
@@ -14,17 +16,17 @@ export class Bubble {
 
   popped = false;
 
-  constructor(tank: HTMLElement) {
+  constructor(tank: Tank) {
     this.div = document.createElement("div");
     this.div.classList.add("bubble");
     this.div.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
 
-    this.x = Math.random() * tank.clientWidth;
-    this.y = tank.clientHeight;
+    this.x = Math.random() * tank.width;
+    this.y = tank.height;
     this.speed = RISE_MIN + Math.random() * (RISE_MAX - RISE_MIN);
 
     this.draw();
-    tank.appendChild(this.div);
+    tank.add(this.div);
   }
 
   rise(dt: number, surfaceY: number) {
@@ -48,7 +50,7 @@ export class Bubble {
   }
 }
 
-export function createBubbleStream(tank: HTMLElement, surface: HTMLElement) {
+export function createBubbleStream(tank: Tank) {
   let bubbles: Bubble[] = [];
   let nextSpawn = 0;
 
@@ -60,9 +62,7 @@ export function createBubbleStream(tank: HTMLElement, surface: HTMLElement) {
         nextSpawn = SPAWN_MIN + Math.random() * (SPAWN_MAX - SPAWN_MIN);
       }
 
-      // Pop against the underside of the ripple, wherever it currently sits.
-      const surfaceY = surface.offsetHeight;
-      for (const bubble of bubbles) bubble.rise(dt, surfaceY);
+      for (const bubble of bubbles) bubble.rise(dt, tank.surfaceY);
 
       bubbles = bubbles.filter(bubble => !bubble.popped);
     }

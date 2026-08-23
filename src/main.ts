@@ -1,7 +1,7 @@
 import './style.css'
+import { Tank } from './tank';
 import { createSchool } from './fish';
 import { createSeaweedBed } from './seaweed';
-import { createRipple } from './ripple';
 import { createBubbleStream } from './bubble';
 
 const FISH_COUNT = 15;
@@ -10,12 +10,11 @@ const FISH_COUNT = 15;
 // Cap it or every fish teleports across the tank on return.
 const MAX_FRAME_SECONDS = 0.1;
 
-const tank = document.getElementById("tank") as HTMLElement;
+const tank = new Tank(document.getElementById("tank") as HTMLElement);
 
-const surface = createRipple(tank);
 createSeaweedBed(tank);
 const school = createSchool(tank, FISH_COUNT);
-const bubbles = createBubbleStream(tank, surface);
+const bubbles = createBubbleStream(tank);
 
 let last = performance.now();
 

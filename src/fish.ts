@@ -1,3 +1,5 @@
+import type { Tank } from './tank';
+
 export type Color = "red" | "blue" | "yellow" | "green" | "purple";
 
 type FishTemplate = { body: string; color: Color; speed: number };
@@ -19,7 +21,7 @@ const MAX_HEADING_SECONDS = 80;
 
 export class Fish {
     div: HTMLDivElement;
-    tank: HTMLElement;
+    tank: Tank;
 
     position: { x: number; y: number };
     velocity: { x: number; y: number } = { x: 0, y: 0 };
@@ -28,7 +30,7 @@ export class Fish {
     directionTimer: number = 0;
     color: Color;
 
-    constructor(tank: HTMLElement, body: string, speed: number, color: Color) {
+    constructor(tank: Tank, body: string, speed: number, color: Color) {
 
         this.tank = tank;
         this.speed = speed * BASELINE_FPS;
@@ -44,11 +46,11 @@ export class Fish {
         this.div.appendChild(inner);
 
         this.position = {
-            x: Math.random() * tank.clientWidth,
-            y: Math.random() * tank.clientHeight
+            x: Math.random() * tank.width,
+            y: Math.random() * tank.height
         }
 
-        tank.appendChild(this.div);
+        tank.add(this.div);
         this.changeDirection();
     }
 
@@ -74,14 +76,16 @@ export class Fish {
         if (this.position.x <= 50 && this.velocity.x < 0) {
             this.velocity.x *= -1;
         }
-        if (this.position.x >= this.tank.clientWidth - 40 && this.velocity.x > 0) {
+        if (this.position.x >= this.tank.width - 40 && this.velocity.x > 0) {
             this.velocity.x *= -1;
         }
 
-        if (this.position.y <= 10 && this.velocity.y < 0) {
+        // Bounce off the underside of the waterline, not an arbitrary offset,
+        // so fish never swim up into the surface tildes.
+        if (this.position.y <= this.tank.surfaceY && this.velocity.y < 0) {
             this.velocity.y *= -1;
         }
-        if (this.position.y >= this.tank.clientHeight - 40 && this.velocity.y > 0) {
+        if (this.position.y >= this.tank.height - 40 && this.velocity.y > 0) {
             this.velocity.y *= -1;
         }
 
@@ -94,7 +98,7 @@ export class Fish {
 
 }
 
-export function createSchool(tank: HTMLElement, count: number): Fish[] {
+export function createSchool(tank: Tank, count: number): Fish[] {
     return Array.from({ length: count }, () => {
         const template = FISH_TYPES[Math.floor(Math.random() * FISH_TYPES.length)];
         return new Fish(tank, template.body, template.speed, template.color);
