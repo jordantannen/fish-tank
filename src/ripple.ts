@@ -35,4 +35,6 @@ export function createRipple(tank: HTMLElement) {
 
   sync();
   addEventListener("resize", sync);
+
+  return outer;
 }

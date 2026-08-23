@@ -2,6 +2,7 @@ import './style.css'
 import { createSchool } from './fish';
 import { createSeaweedBed } from './seaweed';
 import { createRipple } from './ripple';
+import { createBubbleStream } from './bubble';
 
 const FISH_COUNT = 15;
 
@@ -11,9 +12,10 @@ const MAX_FRAME_SECONDS = 0.1;
 
 const tank = document.getElementById("tank") as HTMLElement;
 
-createRipple(tank);
+const surface = createRipple(tank);
 createSeaweedBed(tank);
 const school = createSchool(tank, FISH_COUNT);
+const bubbles = createBubbleStream(tank, surface);
 
 let last = performance.now();
 
@@ -22,6 +24,8 @@ function loop(now: number) {
   last = now;
 
   school.forEach(fish => fish.swim(dt));
+  bubbles.update(dt);
+
   requestAnimationFrame(loop);
 }
 
