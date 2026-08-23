@@ -81,12 +81,12 @@ body {
   text-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
   /* scroll uses `translate`, bob uses `transform` so the two don't clobber each other */
   animation:
-    ripple-scroll 45s linear infinite,
-    ripple-bob 2s ease-in-out infinite alternate;
+    ripple-scroll 60s linear infinite,
+    ripple-bob 4s ease-in-out infinite alternate;
 }
 
 /* second row shares the first row's baseline and mirrors its bob, so the two are always
-   on opposite sides: every 2s the crest and trough trade places */
+   on opposite sides: every bob duration the crest and trough trade places */
 .ripple-row + .ripple-row {
   margin-top: -1em;
   animation-direction: normal, alternate-reverse;
@@ -98,8 +98,8 @@ body {
 }
 
 @keyframes ripple-bob {
-  from { transform: translateY(-0.25em); }
-  to   { transform: translateY(0.25em); }
+  from { transform: translateY(-0.125em); }
+  to   { transform: translateY(0.125em); }
 }
 
 .seaweed {
